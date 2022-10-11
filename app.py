@@ -1,3 +1,8 @@
+"""
+First resource
+"""
+
+# External imports
 from flask import Flask
 from flask_restful import Resource, Api
 
@@ -28,8 +33,17 @@ hoteis = [
     }
 ]
 
+
 class Hoteis(Resource):
+    """
+    Class Hotel
+    """
+
     def get(self):
+        """
+        Get all hoteis
+        """
+
         return {'hoteis': hoteis}
 
 api.add_resource(Hoteis, '/hoteis')
