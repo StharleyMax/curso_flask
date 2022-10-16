@@ -3,6 +3,7 @@ Resource hotel
 """
 
 # External imports
+from ast import Delete
 from flask_restful import Resource
 
 
@@ -33,7 +34,7 @@ hoteis = [
 
 class Hoteis(Resource):
     """
-    Class Hotel
+    Class Hoteis
     """
 
     def get(self):
@@ -42,3 +43,25 @@ class Hoteis(Resource):
         """
 
         return {'hoteis': hoteis}
+
+class Hotel(Resource):
+    """
+    Class Hotel
+    """
+
+    def get(self, hotel_id):
+        
+        for hotel in hoteis:
+            if hotel['hotel_id'] == hotel_id:
+                return hotel
+
+        return {'message': 'Hotel not found'}, 404
+    
+    def post(self, hotel_id):
+        pass
+
+    def put(self, hotel_id):
+        pass
+
+    def delete(self, hotel_id):
+        pass
