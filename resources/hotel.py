@@ -48,6 +48,12 @@ class Hotel(Resource):
     Class Hotel
     """
 
+    argumentos = reqparse.RequestParser()
+    argumentos.add_argument('nome')
+    argumentos.add_argument('estrelas')
+    argumentos.add_argument('diaria')
+    argumentos.add_argument('cidade')
+
     def find_hotel(self, hotel_id: str) -> dict:
         """
         find hotel.
@@ -85,29 +91,34 @@ class Hotel(Resource):
         :return: hotel dict create
         """
 
-        if self.find_hotel(hotel_id):
+        hotel =  self.find_hotel(hotel_id)
+        if hotel:
             return {'message': f'Hotel {hotel_id} already exists'}
 
-        argumentos = reqparse.RequestParser()
-        argumentos.add_argument('nome')
-        argumentos.add_argument('estrelas')
-        argumentos.add_argument('diaria')
-        argumentos.add_argument('cidade')
-
-        dados = argumentos.parse_args()
-        novo_hotel = {
-            'hotel_id': hotel_id,
-            'nome': dados['nome'],
-            'estrelas': dados['estrelas'],
-            'diaria': dados['diaria'],
-            'cidade': dados['cidade'],
-        }
-
+        dados = self.argumentos.parse_args()
+        novo_hotel = {'hotel_id': hotel_id, **dados}
         hoteis.append(novo_hotel)
-        return novo_hotel, 200
 
-    def put(self, hotel_id):
-        pass
+        return novo_hotel, 201
+
+    def put(self, hotel_id) -> dict:
+        """
+        Handle put hotel.
+
+        :params hotel_id: id hotel to update.
+
+        :return: hotel dict update
+        """
+
+        hotel = self.find_hotel(hotel_id)
+        if not hotel:
+            return {'message:': f'Hotel {hotel_id} not exists'}
+        
+        dados = self.argumentos.parse_args()
+        novo_hotel = {'hotel_id': hotel_id, **dados}
+        hotel.update(novo_hotel)
+        
+        return novo_hotel, 200
 
     def delete(self, hotel_id):
         pass
