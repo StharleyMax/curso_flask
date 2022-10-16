@@ -113,12 +113,21 @@ class Hotel(Resource):
         hotel = self.find_hotel(hotel_id)
         if not hotel:
             return {'message:': f'Hotel {hotel_id} not exists'}
-        
+
         dados = self.argumentos.parse_args()
         novo_hotel = {'hotel_id': hotel_id, **dados}
         hotel.update(novo_hotel)
-        
+
         return novo_hotel, 200
 
-    def delete(self, hotel_id):
-        pass
+    def delete(self, hotel_id) -> dict:
+        """
+        Handle delete hotel.
+
+        :params hotel_id: id hotel to delete.
+
+        :return: message of delete.
+        """
+
+        hoteis = [hotel for hotel in hoteis if hotel['hotel_id'] != hotel_id]
+        return {'message': 'Hotel deleted.'}
